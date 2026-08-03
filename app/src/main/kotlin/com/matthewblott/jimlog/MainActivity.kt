@@ -10,12 +10,13 @@ import androidx.core.content.ContextCompat
 import dev.hotwire.navigation.activities.HotwireActivity
 import dev.hotwire.navigation.navigator.NavigatorConfiguration
 import dev.hotwire.navigation.util.applyDefaultImeWindowInsets
-import com.masilotti.bridgecomponents.shared.Bridgework
 import dev.hotwire.core.bridge.KotlinXJsonConverter
 import dev.hotwire.core.config.Hotwire
 import dev.hotwire.navigation.config.registerBridgeComponents
 import dev.hotwire.core.bridge.BridgeComponentFactory
-import com.matthewblott.jimlog.components.ButtonComponent
+import com.matthewblott.jimlog.components.BackComponent
+import com.masilotti.bridgecomponents.button.ButtonComponent
+import dev.hotwire.core.turbo.config.PathConfiguration
 
 class MainActivity : HotwireActivity() {
   companion object {
@@ -24,8 +25,20 @@ class MainActivity : HotwireActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
 
+    Hotwire.loadPathConfiguration(
+      context = this,
+      location = PathConfiguration.Location(
+        assetFilePath = "json/path-configuration.json",
+      ),
+    )
+
+
     Hotwire.config.jsonConverter = KotlinXJsonConverter()
-    Hotwire.registerBridgeComponents(*Bridgework.coreComponents)
+    Hotwire.registerBridgeComponents(
+      BridgeComponentFactory("button", ::ButtonComponent),
+      BridgeComponentFactory("back", ::BackComponent),
+    )
+
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     findViewById<View>(R.id.main_nav_host).applyDefaultImeWindowInsets()

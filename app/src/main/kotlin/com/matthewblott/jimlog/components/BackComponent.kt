@@ -8,7 +8,7 @@ import dev.hotwire.navigation.destinations.HotwireDestination
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-class ButtonComponent(
+class BackComponent(
   name: String,
   private val delegate: BridgeDelegate<HotwireDestination>
 ) : BridgeComponent<HotwireDestination>(name, delegate) {
